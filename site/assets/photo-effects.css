@@ -1,0 +1,219 @@
+/* =========================================================
+   影像锚点与暗房灯箱增强样式（Direction A 校刊纸面 + 暗房放映双语境适配）
+   ========================================================= */
+
+/* 01 / 编年：卷末胶片影像带标题与拍立得相纸框 */
+.vol-photos-wrap {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--rule-strong);
+}
+.vol-photos-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.vol-photos-head strong {
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  color: var(--ink);
+  letter-spacing: 0.06em;
+}
+.vol-photos {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.vol-photos .photo-frame {
+  cursor: pointer;
+  background: #FAF7F1;
+  border: 1px solid var(--rule-strong);
+  padding: 8px 8px 11px;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.vol-photos .photo-frame:hover {
+  transform: translateY(-2px);
+  border-color: var(--c);
+  box-shadow: 0 8px 20px rgba(27, 30, 28, 0.09);
+}
+.vol-photos .photo-frame figcaption {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* 04 / 光影与特展：暗房底片陈列区 */
+.photo-gallery-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 14px;
+  padding-top: 24px;
+  border-top: 1px solid var(--dark-rule);
+}
+.photo-gallery-head h3 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.18rem;
+  letter-spacing: 0.05em;
+  color: var(--ivory);
+}
+.photo-gallery-head span {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+}
+.sec-dark .photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+  gap: 16px;
+}
+.sec-dark .photo-frame {
+  margin: 0;
+  padding: 9px 9px 12px;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-rule);
+  cursor: pointer;
+  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+}
+.sec-dark .photo-frame:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: #232E2A;
+}
+.sec-dark .photo-frame img {
+  border: 0;
+  border-radius: 2px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.sec-dark .photo-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-top: 9px;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  color: var(--gold);
+}
+.sec-dark .photo-frame figcaption {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--ivory-soft);
+}
+
+/* 暗房全屏检视灯箱（完整比例无裁切 + 编年定位） */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(12, 16, 15, 0.92);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.lightbox[hidden] {
+  display: none !important;
+}
+.lightbox-dialog {
+  max-width: min(1080px, 94vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  background: #171F1C;
+  border: 1px solid rgba(199, 165, 107, 0.35);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.65);
+  color: var(--ivory);
+}
+.lightbox-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--dark-rule);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--gold);
+}
+.lightbox-close {
+  background: transparent;
+  border: 1px solid var(--dark-rule);
+  color: var(--ivory);
+  padding: 4px 12px;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  cursor: pointer;
+}
+.lightbox-close:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.lightbox-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0E1311;
+  padding: 12px;
+  overflow: hidden;
+}
+.lightbox-stage img {
+  max-width: 100%;
+  max-height: 68vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+.lightbox-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--dark-rule);
+}
+.lightbox-caption strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--ivory);
+  margin-bottom: 3px;
+}
+.lightbox-caption span {
+  font-size: 0.8rem;
+  color: var(--ivory-soft);
+}
+.lightbox-actions {
+  display: flex;
+  gap: 8px;
+}
+.lightbox-btn {
+  background: transparent;
+  border: 1px solid rgba(199, 165, 107, 0.4);
+  color: var(--gold);
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.lightbox-btn:hover {
+  background: rgba(199, 165, 107, 0.14);
+  color: var(--ivory);
+}
