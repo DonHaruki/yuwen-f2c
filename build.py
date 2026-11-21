@@ -113,13 +113,13 @@ VIDEO_META = {
 # 自动按 theme 归档照片
 PHOTOS = [
     # F班影像
-    {"id": "ph-f-junxun", "vol": 0, "date": "2021-09-21", "badge": "21F", "name": "21语教F军训", "file": "21语文教育F军训.webp", "src": "assets/photos/21语文教育F军训.webp", "caption": "21语教F军训", "theme": "F班影像"},
+    {"id": "ph-f-junxun", "vol": 0, "date": "2021-09-21", "badge": "21F", "name": "21语教F军训", "file": "21语文教育F军训_亮.webp", "src": "assets/photos/21语文教育F军训_亮.webp", "caption": "21语教F军训", "theme": "F班影像"},
     {"id": "ph-f-tuanjian", "vol": 0, "date": "2021-11-08", "badge": "21F", "name": "F班团建", "file": "F班团建.webp", "src": "assets/photos/F班团建.webp", "caption": "F班团建", "theme": "F班影像"},
     {"id": "ph-f-jiaozi", "vol": 0, "date": "2021-12-20", "badge": "21F", "name": "F班包饺子", "file": "F班团建做饺子.webp", "src": "assets/photos/F班团建做饺子.webp", "caption": "F班包饺子", "theme": "F班影像"},
-    {"id": "ph-f-tuanri", "vol": 0, "date": "2021-11", "badge": "21F", "name": "F班团日活动", "file": "F班团日活动.webp", "src": "assets/photos/F班团日活动.webp", "caption": "F班团日活动", "theme": "F班影像"},
     {"id": "ph-f-banzhuren", "vol": 0, "date": "2021-12", "badge": "21F", "name": "班主任版F班团建", "file": "班主任版F班团建.webp", "src": "assets/photos/班主任版F班团建.webp", "caption": "班主任版F班团建", "theme": "F班影像"},
+    {"id": "ph-english", "vol": 0, "date": "2022-01", "badge": "21F", "name": "F班大一英语课合影", "file": "大一英语课大合影.webp", "src": "assets/photos/大一英语课大合影.webp", "caption": "F班大一英语课合影", "theme": "F班影像"},
     # C班影像
-    {"id": "ph-english", "vol": 1, "date": "2022-01", "badge": "21C", "name": "C班英语课合影", "file": "大一英语课大合影.webp", "src": "assets/photos/大一英语课大合影.webp", "caption": "C班大一英语课合影", "theme": "C班影像"},
+    {"id": "ph-group-discuss", "vol": 1, "date": "2022-03", "badge": "21C", "name": "小组作业激情讨论", "file": "小组作业激情讨论.jpg", "src": "assets/photos/小组作业激情讨论.jpg", "caption": "小组作业激情讨论", "theme": "C班影像"},
     {"id": "ph-weige", "vol": 2, "date": "2023", "badge": "21C", "name": "C班微格教学", "file": "微格小组合影.webp", "src": "assets/photos/微格小组合影.webp", "caption": "C班微格教学合影", "theme": "C班影像"},
     {"id": "ph-sizheng", "vol": 1, "date": "2022-05-20", "badge": "21C", "name": "C班思政课合影", "file": "思政课合影.webp", "src": "assets/photos/思政课合影.webp", "caption": "C班思政课合影", "theme": "C班影像"},
     {"id": "ph-shige-stage", "vol": 1, "date": "2022-06-06", "badge": "21C", "name": "C班诗歌朗诵合影", "file": "诗歌朗诵合影.webp", "src": "assets/photos/诗歌朗诵合影.webp", "caption": "C班诗歌朗诵合影", "theme": "C班影像"},
@@ -387,6 +387,8 @@ def build_chronicle() -> tuple[list[dict], list[dict]]:
                 )
 
                 first_line = block[0]
+                if "大愚治水" in full_block:
+                    continue
                 em = ev_re.match(full_block.splitlines()[0].strip())
                 if not em:
                     continue
@@ -488,6 +490,8 @@ def build_archive() -> dict:
             cells = _split_pipe_row(t)
             if len(cells) >= 6 and cells[0] == "群聊":
                 name = cells[1].replace("**", "").strip()
+                if name == "大愚治水":
+                    continue
                 public_group_names.add(name)
                 groups.append({
                     "name": name,
@@ -687,7 +691,7 @@ def write_checklist(
 def main() -> None:
     chronicle, themes = build_chronicle()
     for idx, vol in enumerate(chronicle):
-        vol["photos"] = [p for p in PHOTOS if p.get("vol") == idx]
+        vol["photos"] = [p for p in PHOTOS if p.get("vol") == idx] if idx == 0 else []
     archive = build_archive()
     essays = build_essays()
     specials = [

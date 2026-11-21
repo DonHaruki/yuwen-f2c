@@ -54,8 +54,8 @@
     var m = D.meta || {};
     var items = [
       { num: "2", label: "个班级（21F → 21C）", cls: "f" },
-      { num: String(m.groupsCount || 30), label: "个班级与课程群" },
-      { num: String(m.totalGroupFiles || 898), label: "份群流转资料", cls: "c" },
+      { num: String(m.groupsCount || 29), label: "个班级与课程群" },
+      { num: String(m.totalGroupFiles || 894), label: "份群流转资料", cls: "c" },
       { num: "4", label: "年花都岁月" }
     ];
     $("stat-pills").innerHTML = items.map(function (it) {
@@ -65,7 +65,7 @@
         "</div>";
     }).join("");
     if ($("groups-toggle-label")) {
-      $("groups-toggle-label").textContent = "查看 " + (m.groupsCount || 30) + " 个班级与课程群概览";
+      $("groups-toggle-label").textContent = "查看 " + (m.groupsCount || 29) + " 个班级与课程群概览";
     }
   }
 
@@ -108,9 +108,31 @@
         "</div>";
       }).join("");
 
-      // Photo-ready slot: renders per-volume memory anchors (Option 2)
-      var photosHtml = (v.photos && v.photos.length)
-        ? '<div class="vol-photos-wrap">' +
+      // Photo-ready slot: renders per-volume memory anchors
+      var photosHtml = "";
+      if (v.photos && v.photos.length) {
+        if (v.id === "vol-1") {
+          var fBig = v.photos.filter(function (ph) { return ph.id === "ph-f-junxun"; })[0];
+          var fRest = v.photos.filter(function (ph) { return ph !== fBig; });
+          photosHtml = '<div class="vol-photos-wrap" id="f-gallery">' +
+            '<div class="vol-photos-head">' +
+              '<strong>本卷影像锚点 · ' + v.photos.length + ' 帧</strong>' +
+              '<span>四帧日常与军训大合影</span>' +
+            '</div>' +
+            '<div class="f-photo-grid">' + fRest.map(function (ph) {
+              var pid = ph.id ? ' data-photo-id="' + esc(ph.id) + '"' : '';
+              return '<figure class="f-photo-item"' + pid + '>' +
+                '<img src="' + esc(ph.src) + '" alt="' + esc(ph.caption || ph.name || "") + '" loading="lazy">' +
+                (ph.caption ? "<figcaption>" + esc(ph.caption) + "</figcaption>" : "") +
+              "</figure>";
+            }).join("") + '</div>' +
+            (fBig ? '<figure class="f-photo-feature">' +
+              '<img src="' + esc(fBig.src) + '" alt="' + esc(fBig.caption || fBig.name || "") + '" loading="lazy">' +
+              '<figcaption><span class="mono">' + esc(fBig.date || "") + '</span><strong>' + esc(fBig.caption || fBig.name) + '</strong></figcaption>' +
+            '</figure>' : '') +
+          '</div>';
+        } else {
+          photosHtml = '<div class="vol-photos-wrap">' +
             '<div class="vol-photos-head">' +
               '<strong>本卷影像锚点 · ' + v.photos.length + ' 帧</strong>' +
               '<span>点击任意合影可暗房放大检视完整比例</span>' +
@@ -122,8 +144,9 @@
                 (ph.caption ? "<figcaption>" + esc(ph.caption) + "</figcaption>" : "") +
               "</figure>";
             }).join("") + '</div>' +
-          '</div>'
-        : "";
+          '</div>';
+        }
+      }
 
       return '<section class="vol-block" data-badge="' + esc(v.badge) + '">' +
         '<div class="vol-header">' +
@@ -310,6 +333,30 @@
 
   }
 
+  function renderClassPhotos() {
+    var grid = $("cwall-grid");
+    var feat = $("cwall-feature");
+    if (!grid || !feat) return;
+    var list = (D.photos || []).filter(function (p) { return p.theme === "C班影像"; });
+    if (!list.length) return;
+    var big = list.filter(function (p) { return (p.name || "").indexOf("毕业合影") >= 0; })[0] || list[list.length - 1];
+    var rest = list.filter(function (p) { return p !== big; }).sort(function (a, b) {
+      return String(a.date || "").localeCompare(String(b.date || ""));
+    });
+    grid.innerHTML = rest.map(function (ph) {
+      return '<figure class="cwall-item">' +
+        '<img src="' + esc(ph.src) + '" alt="' + esc(ph.caption || ph.name) + '" loading="lazy">' +
+        '<figcaption><strong>' + esc(ph.caption || ph.name) + '</strong>' +
+        '<span class="mono">' + esc(ph.date || "") + '</span></figcaption>' +
+      '</figure>';
+    }).join("");
+    feat.innerHTML = '<img src="' + esc(big.src) + '" alt="' + esc(big.caption || big.name) + '" loading="lazy">' +
+      '<figcaption>' +
+        '<span class="mono">' + esc(big.date || "") + '</span>' +
+        '<strong>' + esc(big.caption || big.name) + '</strong>' +
+      '</figcaption>';
+  }
+
   function updateProgress() {
     var el = $("reader");
     var max = el.scrollHeight - el.clientHeight;
@@ -400,7 +447,9 @@
 
   // 初始化 photo-anchor 点击事件
   document.addEventListener("DOMContentLoaded", function() {
-    $("photo-grid").addEventListener("click", function(ev) {
+    var pg = $("photo-grid");
+    if (!pg) return;
+    pg.addEventListener("click", function(ev) {
       var anchor = ev.target.closest(".photo-anchor");
       if (anchor && anchor.dataset.anchor) {
         window.location.hash = '#' + anchor.dataset.anchor;
@@ -550,7 +599,19 @@
   renderEssays();
   renderArchiveStatic();
   renderFilesTable();
+  renderClassPhotos();
   renderVideos();
   syncFromHash();
   syncNav();
 })();
+
+// 深链接兜底：内容由脚本渲染，hash 目标可能在初始解析时尚不存在
+window.addEventListener("load", function () {
+  if (!location.hash) return;
+  setTimeout(function () {
+    try {
+      var el = document.querySelector(location.hash);
+      if (el) el.scrollIntoView({ block: "start" });
+    } catch (e) {}
+  }, 120);
+});
