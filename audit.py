@@ -27,10 +27,7 @@ _PACKED_FORBIDDEN = (
     "kVB0MYtM{uS7ZZCJCq+}XeX#xY%qPDvBm~z@zdg?x#zDQ1;c*PoSd=;GsaLUplgB1S!`5M;{*-zh_`#spZK17((BWo7Y0O@Q0<UxT{+qo?8k9gVuvVYbWj5R"
     "mfo~B#FZR%eeT7jXH($(3<7Q+7o^}{a0iz-O2LHyOX!@T>=C*$kTRtDPfksJ`y7vkTyOpYF$a5g"
 )
-_PACKED_RESTRICTED = (
-    "c-k$@K?=e!5CzbyNY>s+yi2P>f;A+f){P5`t*D?~h!jnvm&r`xEo_GD{+mDi2?N2Q=%Fs1J+kpA8CNs^T}OLkK?{5pp<PgaKZEL"
-    "G3RM%bIsMp8N<S`L|DZPC`lrG24OT_t;f6}PPfa*w!y<@%s4nDX16n2w3FMB>LVI(iwYGztv*{nxvRwr"
-)
+_PACKED_RESTRICTED = "c-mEvZBD{K5QeW}`rAu*4&z;bLc55yRSWphfK{kqY-@s~z_#=<JG0wc(2m;}f9><kOlIEfr2))_Q3;EQ$X|`~GwpcOlf_-*lIP$t+>TV*r+yrPn>D1urRtb8lRs#xY)6y{b-TXYaGdNRcN@px6J1Xn79{VTdLyu@3RmRUOYj^mHGwmxGV>%~)3!8&u1(#4VM(C3`Au%&_?zfBtwqy?PA&bpN+UD}e+MO>t0Zi^4vqf44N#iWv+(JsdRet4W>o`6ljQxD+?eR_A&NGB{owEmqkw)U_SJC>$q;YvX)>9qY%7XD?4HGrS8tET)d?e<&vy"
 
 
 def _unpack(s: str) -> tuple[str, ...]:
