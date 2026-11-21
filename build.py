@@ -121,19 +121,19 @@ VIDEO_META = {
 # 自动按 theme 归档照片
 PHOTOS = [
     # F班影像
-    {"id": "ph-f-junxun", "vol": 0, "date": "2021-09-21", "badge": "21F", "name": "21语教F军训", "file": "21语文教育F军训_亮.webp", "src": "assets/photos/21语文教育F军训_亮.webp", "caption": "21语教F军训", "theme": "F班影像"},
-    {"id": "ph-f-tuanjian", "vol": 0, "date": "2021-11-08", "badge": "21F", "name": "F班团建", "file": "F班团建.webp", "src": "assets/photos/F班团建.webp", "caption": "F班团建", "theme": "F班影像"},
-    {"id": "ph-f-jiaozi", "vol": 0, "date": "2021-12-20", "badge": "21F", "name": "F班包饺子", "file": "F班团建做饺子.webp", "src": "assets/photos/F班团建做饺子.webp", "caption": "F班包饺子", "theme": "F班影像"},
-    {"id": "ph-f-banzhuren", "vol": 0, "date": "2021-12", "badge": "21F", "name": "班主任版F班团建", "file": "班主任版F班团建.webp", "src": "assets/photos/班主任版F班团建.webp", "caption": "班主任版F班团建", "theme": "F班影像"},
-    {"id": "ph-english", "vol": 0, "date": "2022-01", "badge": "21F", "name": "F班大一英语课合影", "file": "大一英语课大合影.webp", "src": "assets/photos/大一英语课大合影.webp", "caption": "F班大一英语课合影", "theme": "F班影像"},
+    {"id": "ph-f-junxun", "vol": 0, "date": "2021-09-21", "badge": "21F", "name": "21语教F军训", "file": "21语文教育F军训_亮.webp", "src": "assets/photos/21语文教育F军训_亮.webp", "caption": "21 语教 F 班军训大合影", "theme": "F班影像"},
+    {"id": "ph-f-tuanjian", "vol": 0, "date": "2021-11-08", "badge": "21F", "name": "F班团建", "file": "F班团建.webp", "src": "assets/photos/F班团建.webp", "caption": "深秋初聚 · F 班第一次班级团建", "theme": "F班影像"},
+    {"id": "ph-f-jiaozi", "vol": 0, "date": "2021-12-20", "badge": "21F", "name": "F班包饺子", "file": "F班团建做饺子.webp", "src": "assets/photos/F班团建做饺子.webp", "caption": "冬至前夕 · F 班团建包饺子", "theme": "F班影像"},
+    {"id": "ph-f-banzhuren", "vol": 0, "date": "2021-12", "badge": "21F", "name": "班主任版F班团建", "file": "班主任版F班团建.webp", "src": "assets/photos/班主任版F班团建.webp", "caption": "岁末合影 · 与班主任共度的 F 班团建", "theme": "F班影像"},
+    {"id": "ph-english", "vol": 0, "date": "2022-01", "badge": "21F", "name": "F班大一英语课合影", "file": "大一英语课大合影.webp", "src": "assets/photos/大一英语课大合影.webp", "caption": "分流前夕 · F 班大一上英语结课合影", "theme": "F班影像"},
     # C班影像
-    {"id": "ph-group-discuss", "vol": 1, "date": "2022-03", "badge": "21C", "name": "小组作业激情讨论", "file": "小组作业激情讨论.jpg", "src": "assets/photos/小组作业激情讨论.jpg", "caption": "小组作业激情讨论", "theme": "C班影像"},
-    {"id": "ph-weige", "vol": 2, "date": "2023", "badge": "21C", "name": "C班微格教学", "file": "微格小组合影.webp", "src": "assets/photos/微格小组合影.webp", "caption": "C班微格教学合影", "theme": "C班影像"},
-    {"id": "ph-sizheng", "vol": 1, "date": "2022-05-20", "badge": "21C", "name": "C班思政课合影", "file": "思政课合影.webp", "src": "assets/photos/思政课合影.webp", "caption": "C班思政课合影", "theme": "C班影像"},
-    {"id": "ph-shige-stage", "vol": 1, "date": "2022-06-06", "badge": "21C", "name": "C班诗歌朗诵合影", "file": "诗歌朗诵合影.webp", "src": "assets/photos/诗歌朗诵合影.webp", "caption": "C班诗歌朗诵合影", "theme": "C班影像"},
-    {"id": "ph-shige-prep", "vol": 1, "date": "2022-04-16", "badge": "21C", "name": "C班诗歌朗诵组队", "file": "诗歌朗诵合影 (2).webp", "src": "assets/photos/诗歌朗诵合影 (2).webp", "caption": "C班诗歌朗诵组队", "theme": "C班影像"},
-    {"id": "ph-grad-college", "vol": 4, "date": "2025-05", "badge": "21C", "name": "文学院大合影", "file": "文学院大合影.webp", "src": "assets/photos/文学院大合影.webp", "caption": "文学院大合影", "theme": "C班影像"},
-    {"id": "ph-grad-class", "vol": 4, "date": "2025-05-08", "badge": "21C", "name": "C班毕业合影", "file": "2025-05-08_毕业全班正装_C25A0419.webp", "src": "assets/photos/2025-05-08_毕业全班正装_C25A0419.webp", "caption": "C班毕业合影", "theme": "C班影像"},
+    {"id": "ph-group-discuss", "vol": 1, "date": "2022 春 · 大一下", "badge": "21C", "name": "小组作业激情讨论", "file": "小组作业激情讨论.jpg", "src": "assets/photos/小组作业激情讨论.jpg", "caption": "课堂一隅 · 小组作业围坐研讨", "theme": "C班影像"},
+    {"id": "ph-weige", "vol": 2, "date": "2023 春 · 大二下", "badge": "21C", "name": "C班微格教学", "file": "微格小组合影.webp", "src": "assets/photos/微格小组合影.webp", "caption": "实验楼试讲 · 微格教学实训小组合影", "theme": "C班影像"},
+    {"id": "ph-sizheng", "vol": 1, "date": "2022-05-20", "badge": "21C", "name": "C班思政课合影", "file": "思政课合影.webp", "src": "assets/photos/思政课合影.webp", "caption": "五月课堂 · C 班思政课结课合影", "theme": "C班影像"},
+    {"id": "ph-shige-stage", "vol": 1, "date": "2022-06-06", "badge": "21C", "name": "C班诗歌朗诵合影", "file": "诗歌朗诵合影.webp", "src": "assets/photos/诗歌朗诵合影.webp", "caption": "第十一届「春花诗韵」朗诵会舞台合影", "theme": "C班影像"},
+    {"id": "ph-shige-prep", "vol": 1, "date": "2022-04-16", "badge": "21C", "name": "C班诗歌朗诵组队", "file": "诗歌朗诵合影 (2).webp", "src": "assets/photos/诗歌朗诵合影 (2).webp", "caption": "备战「春花诗韵」 · 朗诵小分队排练留影", "theme": "C班影像"},
+    {"id": "ph-grad-college", "vol": 4, "date": "2025-05", "badge": "21C", "name": "文学院大合影", "file": "文学院大合影.webp", "src": "assets/photos/文学院大合影.webp", "caption": "二五年夏 · 文学院二五届毕业大合影", "theme": "C班影像"},
+    {"id": "ph-grad-class", "vol": 4, "date": "2025-05-08", "badge": "21C", "name": "C班毕业合影", "file": "2025-05-08_毕业全班正装_C25A0419.webp", "src": "assets/photos/2025-05-08_毕业全班正装_C25A0419.webp", "caption": "二五年五月八日 · 21 语教 C 班毕业正装全班合影", "theme": "C班影像"},
 ]
 
 

@@ -9,7 +9,7 @@
   }
 
   var DEFAULT_FILE_LIMIT = 24;
-  var ROMAN = ["I", "II", "III", "IV", "V", "VI"];
+  var ROMAN = ["壹", "贰", "叁", "肆", "伍", "陆"];
   var state = {
     volFilter: "vol-1",
     catFilter: "all",
@@ -53,10 +53,10 @@
   function renderHeroStats() {
     var m = D.meta || {};
     var items = [
-      { num: "2", label: "个班级（21F → 21C）", cls: "f" },
+      { num: "2", label: "处同窗行迹（21F → 21C）", cls: "f" },
       { num: String(m.groupsCount || 29), label: "个班级与课程群" },
-      { num: String(m.totalGroupFiles || 894), label: "份群流转资料", cls: "c" },
-      { num: "4", label: "年花都岁月" }
+      { num: String(m.totalGroupFiles || 894), label: "份群内流转资料", cls: "c" },
+      { num: "4", label: "载花都寒暑" }
     ];
     $("stat-pills").innerHTML = items.map(function (it) {
       return '<div class="stat' + (it.cls ? " stat-" + it.cls : "") + '">' +
@@ -116,8 +116,8 @@
           var fRest = v.photos.filter(function (ph) { return ph !== fBig; });
           photosHtml = '<div class="vol-photos-wrap" id="f-gallery">' +
             '<div class="vol-photos-head">' +
-              '<strong>本卷影像锚点 · ' + v.photos.length + ' 帧</strong>' +
-              '<span>四帧日常与军训大合影 · 点击可暗房放大</span>' +
+              '<strong>卷首留影 · 五帧</strong>' +
+              '<span>四帧日常与军训合影 · 点击入暗房展看</span>' +
             '</div>' +
             '<div class="f-photo-grid">' + fRest.map(function (ph) {
               var pid = ph.id ? ' data-photo-id="' + esc(ph.id) + '" tabindex="0" role="button" aria-label="暗房放大检视：' + esc(ph.caption || ph.name || "") + '"' : '';
@@ -134,8 +134,8 @@
         } else {
           photosHtml = '<div class="vol-photos-wrap">' +
             '<div class="vol-photos-head">' +
-              '<strong>本卷影像锚点 · ' + v.photos.length + ' 帧</strong>' +
-              '<span>点击任意合影可暗房放大检视完整比例</span>' +
+              '<strong>本卷留影 · ' + v.photos.length + ' 帧</strong>' +
+              '<span>点击合影可入暗房展看全幅</span>' +
             '</div>' +
             '<div class="vol-photos">' + v.photos.map(function (ph) {
               var pid = ph.id ? ' data-photo-id="' + esc(ph.id) + '"' : '';
@@ -165,7 +165,7 @@
 
     $("theme-grid").innerHTML = (D.themes || []).map(function (th, idx) {
       return '<article class="theme-card">' +
-        '<span class="theme-roman">DOSSIER · ' + esc(ROMAN[idx] || String(idx + 1)) + "</span>" +
+        '<span class="theme-roman">专题 · ' + esc(ROMAN[idx] || String(idx + 1)) + "</span>" +
         "<h4>" + esc(th.title) + "</h4>" +
         '<span class="mono">' + esc(th.span) + "</span>" +
         "<p>" + (th.html || "") + "</p>" +
@@ -465,7 +465,7 @@
     $("lightbox-img").alt = ph.caption || ph.name || "";
     $("lightbox-title").textContent = ph.caption || ph.name || "";
     $("lightbox-sub").textContent = (ph.theme || ph.badge || "") + (ph.date ? " · " + ph.date : "");
-    $("lightbox-meta").textContent = (ph.badge || "") + " · FRAME " + String(idx + 1).padStart(2, "0") + " / " + String(photos.length).padStart(2, "0");
+    $("lightbox-meta").textContent = (ph.badge || "") + " · 第 " + String(idx + 1).padStart(2, "0") + " / " + String(photos.length).padStart(2, "0") + " 帧";
     $("lightbox-prev").disabled = idx <= 0;
     $("lightbox-next").disabled = idx >= photos.length - 1;
     lb.hidden = false;
