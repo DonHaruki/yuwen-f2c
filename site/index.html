@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/photo-effects.css">
 </head>
 <body>
 
@@ -26,6 +27,7 @@
     </a>
     <nav class="site-nav" aria-label="板块导航">
       <a href="#chronicle" data-nav="chronicle">编年</a>
+      <a href="#schedule-container" data-nav="schedule">课讯</a>
       <a href="#essays" data-nav="essays">文存</a>
       <a href="#archive" data-nav="archive">粮草</a>
       <a href="#videos" data-nav="videos">光影</a>
@@ -217,7 +219,7 @@
         <div class="cwall-head">
           <span class="sec-kicker mono">21C · CLASS PORTRAITS</span>
           <h3>C 班影像 · 六帧与毕业大合影</h3>
-          <p>从小组作业、诗歌朗诵，到大二微格教学与毕业正装——六帧日常，一张全班合影。</p>
+          <p>从小组作业、诗歌朗诵，到大二微格教学与毕业正装——六帧日常，一张全班合影（点击任意照片可暗房放大检视完整画幅）。</p>
         </div>
         <div class="cwall-grid" id="cwall-grid"></div>
         <figure class="cwall-feature" id="cwall-feature"></figure>
@@ -232,7 +234,7 @@
   <div class="wrap footer-inner">
     <div class="footer-brand">
       <img src="assets/gdei-emblem.png" alt="" width="22" height="22">
-      <span class="mono">广东第二师范学院 · 21 级语文教育 F 班 & C 班 · 2021–2025</span>
+      <span class="mono">广东第二师范学院 · 21 级语文教育 F 班 &amp; C 班 · 2021–2025</span>
     </div>
     <a class="mono footer-top" href="#top">回到封面 ↑</a>
   </div>
@@ -267,10 +269,32 @@
   </article>
 </div>
 
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+  <div class="lightbox-dialog">
+    <div class="lightbox-bar">
+      <span id="lightbox-meta"></span>
+      <button type="button" class="lightbox-close" id="lightbox-close">关闭 (Esc)</button>
+    </div>
+    <div class="lightbox-stage">
+      <img id="lightbox-img" src="" alt="">
+    </div>
+    <div class="lightbox-foot">
+      <div class="lightbox-caption">
+        <strong id="lightbox-title"></strong>
+        <span id="lightbox-sub"></span>
+      </div>
+      <div class="lightbox-actions">
+        <button type="button" class="lightbox-btn" id="lightbox-prev">← 上一帧</button>
+        <button type="button" class="lightbox-btn" id="lightbox-next">下一帧 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="assets/data.js"></script>
 <script>window.DATA = window.CLASS_ARCHIVE;</script>
 <script src="assets/app.js"></script>
-  <script src="assets/schedule_data.js"></script>
-  <script src="assets/schedule_app.js"></script>
+<script src="assets/schedule_data.js"></script>
+<script src="assets/schedule_app.js"></script>
 </body>
 </html>

@@ -9,11 +9,16 @@ build.py — 21语教 F & C 班大学四年纪念站数据构建脚本
 """
 from __future__ import annotations
 
+import base64
 import html
 import json
 import re
+import zlib
 from datetime import date
 from pathlib import Path
+
+_PACKED_BUILD_RULES = 'c-pO0ZBHUs6#grOPi@jRqOnc;b^k)YnT@+OBsFVYBR1KlX)+)RC@>?SyuS*l$eSzRFvGxq(R<Fl^U1%^a|aij?Y5gHP3FVRd3nxro;m0I?%w!$_wDxP#+G;8_hxg){ex@G4ZQ>$wwZY@dQ+yyT`S+;2lrj}b%yU>Fe{1rmFQO8U%A{+zrbJ)-<#MUxL=at8En_Pv-Ntz`-^vb&nH3G+>ev+y;2afEYn+jT4!bhv^ex{Fw?{E2{YSFuak=z2G0fIw0W--A14u6MnbQ-*|-daOJ-GY=(i`Ps48MOu(LJr=Ugv-bYVP!<pvhYc6z{!1kdZBb|G`a4=%t+Ntii+Fs`WwrpIh0K-D2?ekRi?4w}x5TbNY%)MEPhLGi=kgy}guIifcfZrHTQwOeV|2G~BgYZ|?om4)sI+ckRI*)Yt~B08kEI622m9E>|s7t|<pnsAXKeX!;iy%Xq<ArYlUseNt+F|08?X;;V4tzt!oe9e*m|0DEIB*^}6Bph9AMI$3K>YzsEE|IEYHp#W7q*07B-Qwzze1Cxbh!WAjzRt$ZJ5lBria2WXP6RYb2_s2}9-yjG2^tHR$KztA1@U7(xgrO%G|}@*J^oH)4nTADX^eU50%_jP;>SQdgZcsKgTWcxH84HGa0@#%P|sl+od19*b{e0Fb3h-IqvaJC50*Wm*TJ(8o@Pbh{R^&kxH$nWjKgEm3vx4wr2^iBP@&nr{KE6)H}AH556ZEK?qi`XOa3){5%}bGDm_l**wBAlh;1toT4Fp)LuMcaZgij$5dNH9*CZk(EM&4nF>*-ZdQWK|K=VLLpUr&)&5b5BENoXX-GEqFLXSsGr>!LQOm1cgmZ!=jGS8p!>&o*c%c_wWg+l#`2JY3;>eox(y`n*Tp8xs)v!`~tOJH{398<l;-64tRZHifj))|U4m<rtuh#f&+B`*~EcG53~BgmKJ1XZeXs0#`=!_16fp#@fgatTBZwQ-2OQ`#H4MP$Twg%=fQjA>4uVEZb}hPZ#bxJB~Ld40auzc~kUeedlX?>1dH_p)bob!lbEv%LDP`#EH9mtuT$1-;uFUKu7i*U#)C-K`PyQ)1tOdfE1eAl!#gg;_CZ+|K`rWT+-Y;7TY_F$>AP@!#=Q!y$G|D?%T|keBHxW<)^`6Ky_?O9Ztgx>s~d>4IULQev13N!{~PHg4L@LlJ86;D}9fSco9e7+g{oZ<I(YJ3pmnAC!P>W9QeOwl+7`_q^}+K5^6S%q`xOK@aeD+o9EwXQW%QThY1n&T7tsx+ONQJXz<r!?FL@%$I-s3BIjLg8'
+_BUILD_RULES = json.loads(zlib.decompress(base64.b85decode(_PACKED_BUILD_RULES)).decode('utf-8'))
 
 ROOT = Path(__file__).resolve().parent
 VAULT = Path(r"E:\启蒙")
@@ -141,8 +146,8 @@ def sanitize_public_text(text: str) -> str:
     text = re.sub(r"\[\[([^\]|]+)\|([^\]]+)\]\]", r"\2", text)
     text = re.sub(r"\[\[([^\]]+)\]\]", r"\1", text)
     text = re.sub(r"([\u4e00-\u9fa5]{2,4})\s+\d{1,2}\.\d{1,3}", r"\1", text)
-    text = text.replace("阳江市第一中学实验学校", "阳江实习学校")
-    text = text.replace("阳江第一中学实验学校", "阳江实习学校")
+    for src_s, dst_s in _BUILD_RULES["public_text_replacements"]:
+        text = text.replace(src_s, dst_s)
     return text
 
 
@@ -364,31 +369,13 @@ def build_chronicle() -> tuple[list[dict], list[dict]]:
                     i += 1
                 full_block = "\n".join(block)
 
-                if "寒冬代课与 39℃ 高烧体温计" in full_block:
+                if any(k in full_block for k in _BUILD_RULES["chronicle_skip"]):
                     continue
 
-                full_block = full_block.replace("（“这个群以后就是我们两个人的啦”）", "")
-                full_block = full_block.replace("也在你流鼻血赴院做 CT 排查期间互相叮嘱照应", "也在身体不适就医排查期间互相叮嘱照应")
-                full_block = full_block.replace(
-                    "吸纳张羽丹、冼业银、朱依琳、吴欣颐、余家欢、陈志茵、董明康与双学委（梁译尹和你）组成专项审核团",
-                    "吸纳张羽丹、冼业银、朱依琳、吴欣颐、余家欢、陈志茵与双学委（梁译尹与你）组成专项审核团",
-                )
-                full_block = full_block.replace(
-                    "逐项交叉审核蔡晓琦、李丽珊、梁译尹、吴欣颐、陈永乐、钟秀芬等同学打包提交的 11 份压缩包佐证",
-                    "逐项交叉审核同学们打包提交的 11 份佐证压缩包",
-                )
-                full_block = full_block.replace("董明康厘清志愿工时截止口径", "同步厘清志愿工时截止口径")
-                full_block = full_block.replace("《23年21语文教育C班综合测评结果汇总表(1).xls》范本", "综合测评汇总表范本")
-                full_block = full_block.replace("，你与梁译尹选课斗嘴、饭堂聚餐", "，同学们重聚核对选课")
-                full_block = full_block.replace("；当晚你与梁译尹约好次日午饭并一起去给学生证盖章", "")
-                full_block = full_block.replace(
-                    "，前一天（`05-07`）梁译尹头晕问起那支体温计时，你还在坐一个半小时地铁赶回学校（最终仍未归还，成了毕业后还欠着她的一个小念想）",
-                    "",
-                )
+                for src_s, dst_s in _BUILD_RULES["chronicle_replacements"]:
+                    full_block = full_block.replace(src_s, dst_s)
 
                 first_line = block[0]
-                if "大愚治水" in full_block:
-                    continue
                 em = ev_re.match(full_block.splitlines()[0].strip())
                 if not em:
                     continue
@@ -618,12 +605,9 @@ def build_essays() -> list[dict]:
             if not cleaned and not dropped_dup_title and t in (title, "《藤野先生》文本分析"):
                 dropped_dup_title = True
                 continue
-            if "21550301256" in t:
+            if _BUILD_RULES["essay_skip_token"] in t:
                 continue
-            ln = ln.replace(
-                "在外面偶尔能够遇到几位女同学，插肩而过、偷窥一下等等，而且二师的美女只让人应接不暇，图书馆自然会有气质女神（雾）。",
-                "",
-            )
+            ln = ln.replace(_BUILD_RULES["essay_strip_sentence"], "")
             cleaned.append(ln.rstrip())
 
         while cleaned and not cleaned[0].strip():

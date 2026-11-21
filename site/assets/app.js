@@ -117,16 +117,16 @@
           photosHtml = '<div class="vol-photos-wrap" id="f-gallery">' +
             '<div class="vol-photos-head">' +
               '<strong>本卷影像锚点 · ' + v.photos.length + ' 帧</strong>' +
-              '<span>四帧日常与军训大合影</span>' +
+              '<span>四帧日常与军训大合影 · 点击可暗房放大</span>' +
             '</div>' +
             '<div class="f-photo-grid">' + fRest.map(function (ph) {
-              var pid = ph.id ? ' data-photo-id="' + esc(ph.id) + '"' : '';
+              var pid = ph.id ? ' data-photo-id="' + esc(ph.id) + '" tabindex="0" role="button" aria-label="暗房放大检视：' + esc(ph.caption || ph.name || "") + '"' : '';
               return '<figure class="f-photo-item"' + pid + '>' +
                 '<img src="' + esc(ph.src) + '" alt="' + esc(ph.caption || ph.name || "") + '" loading="lazy">' +
                 (ph.caption ? "<figcaption>" + esc(ph.caption) + "</figcaption>" : "") +
               "</figure>";
             }).join("") + '</div>' +
-            (fBig ? '<figure class="f-photo-feature">' +
+            (fBig ? '<figure class="f-photo-feature" data-photo-id="' + esc(fBig.id) + '" tabindex="0" role="button" aria-label="暗房放大检视：' + esc(fBig.caption || fBig.name || "") + '">' +
               '<img src="' + esc(fBig.src) + '" alt="' + esc(fBig.caption || fBig.name || "") + '" loading="lazy">' +
               '<figcaption><span class="mono">' + esc(fBig.date || "") + '</span><strong>' + esc(fBig.caption || fBig.name) + '</strong></figcaption>' +
             '</figure>' : '') +
@@ -344,12 +344,16 @@
       return String(a.date || "").localeCompare(String(b.date || ""));
     });
     grid.innerHTML = rest.map(function (ph) {
-      return '<figure class="cwall-item">' +
+      return '<figure class="cwall-item" data-photo-id="' + esc(ph.id) + '" tabindex="0" role="button" aria-label="暗房放大检视：' + esc(ph.caption || ph.name) + '">' +
         '<img src="' + esc(ph.src) + '" alt="' + esc(ph.caption || ph.name) + '" loading="lazy">' +
         '<figcaption><strong>' + esc(ph.caption || ph.name) + '</strong>' +
         '<span class="mono">' + esc(ph.date || "") + '</span></figcaption>' +
       '</figure>';
     }).join("");
+    feat.setAttribute("data-photo-id", big.id || "");
+    feat.setAttribute("tabindex", "0");
+    feat.setAttribute("role", "button");
+    feat.setAttribute("aria-label", "暗房放大检视：" + (big.caption || big.name));
     feat.innerHTML = '<img src="' + esc(big.src) + '" alt="' + esc(big.caption || big.name) + '" loading="lazy">' +
       '<figcaption>' +
         '<span class="mono">' + esc(big.date || "") + '</span>' +
@@ -445,27 +449,105 @@
     }
   }
 
-  // 初始化 photo-anchor 点击事件
-  document.addEventListener("DOMContentLoaded", function() {
-    var pg = $("photo-grid");
-    if (!pg) return;
-    pg.addEventListener("click", function(ev) {
-      var anchor = ev.target.closest(".photo-anchor");
-      if (anchor && anchor.dataset.anchor) {
-        window.location.hash = '#' + anchor.dataset.anchor;
+  // 暗房全屏检视灯箱（支持 12 张 F/C 班照片无裁切检视与键盘翻页）
+  var activePhotoIdx = -1;
+  var lastPhotoTrigger = null;
+
+  function openLightboxByIndex(idx, trigger) {
+    var photos = D.photos || [];
+    if (!photos.length || idx < 0 || idx >= photos.length) return;
+    var lb = $("lightbox");
+    if (!lb) return;
+    if (trigger) lastPhotoTrigger = trigger;
+    activePhotoIdx = idx;
+    var ph = photos[idx];
+    $("lightbox-img").src = ph.src;
+    $("lightbox-img").alt = ph.caption || ph.name || "";
+    $("lightbox-title").textContent = ph.caption || ph.name || "";
+    $("lightbox-sub").textContent = (ph.theme || ph.badge || "") + (ph.date ? " · " + ph.date : "");
+    $("lightbox-meta").textContent = (ph.badge || "") + " · FRAME " + String(idx + 1).padStart(2, "0") + " / " + String(photos.length).padStart(2, "0");
+    $("lightbox-prev").disabled = idx <= 0;
+    $("lightbox-next").disabled = idx >= photos.length - 1;
+    lb.hidden = false;
+    document.body.style.overflow = "hidden";
+    $("lightbox-close").focus();
+  }
+
+  function openLightbox(photoId, trigger) {
+    var photos = D.photos || [];
+    for (var i = 0; i < photos.length; i++) {
+      if (photos[i].id === photoId) {
+        openLightboxByIndex(i, trigger);
+        return;
+      }
+    }
+  }
+
+  function closeLightbox() {
+    var lb = $("lightbox");
+    if (!lb || lb.hidden) return;
+    lb.hidden = true;
+    document.body.style.overflow = "";
+    activePhotoIdx = -1;
+    if (lastPhotoTrigger && lastPhotoTrigger.focus) {
+      lastPhotoTrigger.focus();
+    }
+  }
+
+  document.addEventListener("click", function (ev) {
+    var fig = ev.target.closest("[data-photo-id]");
+    if (fig && fig.dataset.photoId) {
+      openLightbox(fig.dataset.photoId, fig);
+      return;
+    }
+    var lb = $("lightbox");
+    if (lb && !lb.hidden && ev.target === lb) {
+      closeLightbox();
+    }
+  });
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter" || ev.key === " ") {
+      var fig = document.activeElement && document.activeElement.closest ? document.activeElement.closest("[data-photo-id]") : null;
+      if (fig && fig.dataset.photoId) {
+        ev.preventDefault();
+        openLightbox(fig.dataset.photoId, fig);
+      }
+    }
+  });
+
+  if ($("lightbox-close")) {
+    $("lightbox-close").addEventListener("click", closeLightbox);
+    $("lightbox-prev").addEventListener("click", function () {
+      if (activePhotoIdx > 0) openLightboxByIndex(activePhotoIdx - 1, null);
+    });
+    $("lightbox-next").addEventListener("click", function () {
+      var photos = D.photos || [];
+      if (activePhotoIdx >= 0 && activePhotoIdx < photos.length - 1) {
+        openLightboxByIndex(activePhotoIdx + 1, null);
       }
     });
-  });
+  }
+
   var bands = Array.prototype.slice.call(document.querySelectorAll("section[data-band]"));
   var navLinks = Array.prototype.slice.call(document.querySelectorAll(".site-nav a[data-nav]"));
   function syncNav() {
     var mid = Math.max(90, window.innerHeight * 0.32);
     var cur = "";
-    for (var i = 0; i < bands.length; i++) {
-      var r = bands[i].getBoundingClientRect();
-      if (r.top <= mid && r.bottom > mid) {
-        cur = bands[i].dataset.band;
-        break;
+    var schedEl = $("schedule-container");
+    if (schedEl) {
+      var sr = schedEl.getBoundingClientRect();
+      if (sr.top <= mid && sr.bottom > mid) {
+        cur = "schedule";
+      }
+    }
+    if (!cur) {
+      for (var i = 0; i < bands.length; i++) {
+        var r = bands[i].getBoundingClientRect();
+        if (r.top <= mid && r.bottom > mid) {
+          cur = bands[i].dataset.band;
+          break;
+        }
       }
     }
     navLinks.forEach(function (a) {
@@ -579,6 +661,17 @@
   });
 
   document.addEventListener("keydown", function (ev) {
+    var lb = $("lightbox");
+    if (lb && !lb.hidden) {
+      if (ev.key === "Escape") {
+        closeLightbox();
+      } else if (ev.key === "ArrowLeft" && activePhotoIdx > 0) {
+        openLightboxByIndex(activePhotoIdx - 1, null);
+      } else if (ev.key === "ArrowRight" && activePhotoIdx < (D.photos || []).length - 1) {
+        openLightboxByIndex(activePhotoIdx + 1, null);
+      }
+      return;
+    }
     if ($("reader").hidden) return;
     var activeTag = document.activeElement ? document.activeElement.tagName : "";
     if (ev.key === "Escape") {
