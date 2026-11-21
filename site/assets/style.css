@@ -298,16 +298,156 @@ button, input { font: inherit; color: inherit; }
   letter-spacing: 0.03em;
 }
 
-/* ---------- 通用章节节奏 ---------- */
+/* ---------- 通用章节节奏与旧书页边（竹纸帘纹 + 书口微晕 + 书耳 + 闲章） ---------- */
 .sec {
+  position: relative;
   padding-block: 76px 84px;
   border-bottom: 1px solid var(--rule);
   scroll-margin-top: 56px;
   background-image: var(--grain);
 }
+.sec-paper,
+.sec-ivory,
+.sec-warm {
+  background-image:
+    /* 左右书口 56px 暖色微晕，中心保持明亮 */
+    linear-gradient(
+      90deg,
+      rgba(156, 134, 98, 0.11) 0%,
+      rgba(156, 134, 98, 0.035) 48px,
+      transparent 160px,
+      transparent calc(100% - 160px),
+      rgba(156, 134, 98, 0.035) calc(100% - 48px),
+      rgba(156, 134, 98, 0.11) 100%
+    ),
+    /* 极浅横向竹纸帘纹（4px 周期） */
+    repeating-linear-gradient(
+      180deg,
+      rgba(27, 30, 28, 0.016) 0px,
+      rgba(27, 30, 28, 0.016) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    /* 竖向抄纸丝路（76px 周期） */
+    repeating-linear-gradient(
+      90deg,
+      rgba(140, 128, 108, 0.022) 0px,
+      rgba(140, 128, 108, 0.022) 1px,
+      transparent 1px,
+      transparent 76px
+    ),
+    var(--grain);
+}
 .sec-paper { background-color: var(--paper); }
 .sec-ivory { background-color: var(--paper-light); }
 .sec-warm { background-color: var(--paper-warm); }
+
+/* 默认隐藏页边书耳与闲章，仅在 1360px+ 宽屏书口留白区呈现 */
+.ear-rail,
+.margin-seal-wrap {
+  display: none;
+}
+
+@media (min-width: 1360px) {
+  /* 版心两侧的极细书口界栏线 */
+  .sec-paper::before,
+  .sec-ivory::before,
+  .sec-warm::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(50% - 556px);
+    right: calc(50% - 556px);
+    border-left: 1px solid rgba(27, 30, 28, 0.085);
+    border-right: 1px solid rgba(27, 30, 28, 0.085);
+    pointer-events: none;
+  }
+
+  .ear-rail {
+    display: block;
+    position: absolute;
+    top: 78px;
+    left: calc(50% + 556px);
+    z-index: 4;
+  }
+  .notice-section {
+    position: relative;
+  }
+  .ear-rail-sub {
+    top: 34px;
+    left: calc(100% + 48px);
+  }
+
+  .book-ear {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 32px;
+    padding: 10px 5px 9px;
+    background: #FAF6EC;
+    border: 1px solid rgba(27, 30, 28, 0.26);
+    border-left: 2px solid var(--c);
+    box-shadow: 2px 4px 12px rgba(27, 30, 28, 0.045);
+    color: var(--ink-soft);
+    transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+  }
+  .book-ear-f {
+    border-left-color: var(--f);
+  }
+  .book-ear:hover {
+    transform: translateX(2px);
+    color: var(--ink);
+    border-color: var(--ink-soft);
+    border-left-color: var(--c);
+  }
+  .book-ear-f:hover {
+    border-left-color: var(--f);
+  }
+  .book-ear-tail {
+    font-size: 0.62rem;
+    line-height: 1;
+    color: var(--c);
+    opacity: 0.85;
+  }
+  .book-ear-f .book-ear-tail {
+    color: var(--f);
+  }
+  .book-ear-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    font-family: var(--serif);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    line-height: 1;
+  }
+  .book-ear-num {
+    width: 100%;
+    padding-top: 6px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+
+  /* 纸页末卷左侧书口：仅保留一枚淡朱砂藏书闲章 */
+  .margin-seal-wrap {
+    display: block;
+    position: absolute;
+    bottom: 86px;
+    right: calc(50% + 574px);
+    pointer-events: none;
+  }
+  .margin-seal {
+    display: block;
+    opacity: 0.36;
+    transform: rotate(-2.5deg);
+  }
+}
 
 .sec-head {
   display: flex;
